@@ -1,0 +1,10 @@
+[package]
+name = "solana-client-test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anchor-client = { version = "0.30.1 ", features = ["async"] }
+bitvm-bridge-contracts-solana = { git = "https://github.com/fiamma-chain/bitvm-bridge-contracts-solana.git", branch = "main" }
+anchor-spl = { version = "0.30.1", features = ["metadata"] }
+tokio = { version = "1.41.1", features = ["macros"] }

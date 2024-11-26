@@ -1,20 +1,28 @@
-use std::rc::Rc;
-use std::str::FromStr; 
 use anchor_client::{
     solana_sdk::{
-        pubkey::Pubkey, signature::read_keypair_file, signer::Signer, system_program
+        commitment_config::CommitmentConfig, pubkey::Pubkey, signature::read_keypair_file,
+        signer::Signer, system_program,
     },
     Client, Cluster,
 };
-use anchor_spl::{associated_token::{get_associated_token_address, spl_associated_token_account}, token::spl_token};
+use anchor_spl::{
+    associated_token::{get_associated_token_address, spl_associated_token_account},
+    token::spl_token,
+};
 use bitvm_bridge::{accounts, instruction};
+use std::rc::Rc;
+use std::str::FromStr;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Create client
     let payer = read_keypair_file("/home/ubuntu/.config/solana/id.json")?;
     let payer = Rc::new(payer);
-    let client = Client::new(Cluster::Devnet, payer.clone());
+    let url = Cluster::Custom(
+        "https://api.devnet.solana.com".to_string(),
+        "wss://api.devnet.solana.com".to_string(),
+    );
+    let client = Client::new_with_options(url, payer.clone(), CommitmentConfig::confirmed());
 
     let mint_token = Pubkey::from_str("HBhPZKQ9axPpbSn4ELExrH5w8fWifeWGzLcb5fvHGVKH")?;
 
@@ -41,7 +49,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .signer(&payer)
         .send()
         .await?;
-
 
     println!("mint success!");
     println!("Mint address: {}", payer.pubkey());

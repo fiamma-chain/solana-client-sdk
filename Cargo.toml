@@ -1,26 +1,37 @@
 [package]
-name = "solana-client-test"
+name = "solana-bitvm-bridge-client"
 version = "0.1.0"
 edition = "2021"
+description = "A Solana client SDK for BitVM Bridge"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/your-username/solana-bitvm-bridge-client"
 
+[lib]
+name = "solana_bitvm_bridge_client"
+path = "src/lib.rs"
 
-[[bin]]
+[[example]]
 name = "mint"
-path = "src/bin/mint.rs"
+path = "examples/mint.rs"
 
-[[bin]]
-name = "event_listener"
-path = "src/bin/event_listener.rs"
-
-[[bin]]
+[[example]]
 name = "burn"
-path = "src/bin/burn.rs"
+path = "examples/burn.rs"
+
+[[example]]
+name = "event_listener"
+path = "examples/event_listener.rs"
 
 [dependencies]
-anchor-client = { version = "0.30.1 ", features = ["async"] }
-bitvm-bridge-contracts-solana = { git = "https://github.com/fiamma-chain/bitvm-bridge-contracts-solana.git", branch = "main" }
+anchor-client = { version = "0.30.1", features = ["async"] }
+bitvm-bridge = { package = "bitvm-bridge-contracts-solana", git = "https://github.com/fiamma-chain/bitvm-bridge-contracts-solana.git", branch = "main" }
+btc-light-client = { package = "btc-light-client", git = "https://github.com/fiamma-chain/bitvm-bridge-contracts-solana.git", branch = "main" }
 anchor-spl = { version = "0.30.1", features = ["metadata"] }
-tokio = { version = "1.41.1", features = ["macros"] }
+tokio = { version = "1.41.1", features = ["full"] }
 solana-transaction-status = "1.18.26"
+solana-sdk = "1.18.26"
+async-trait = "0.1"
 base64 = "0.22.1"
-dotenv = "0.15.0"
+dotenv = "0.15"
+anyhow = "1.0"
+bs58 = "0.5.0"

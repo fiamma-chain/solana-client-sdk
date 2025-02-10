@@ -17,8 +17,16 @@ use tokio::time::sleep;
 /// Event handler trait for processing bridge events
 #[async_trait]
 pub trait EventHandler: Send + Sync {
-    async fn handle_mint(&self, to: String, value: u64);
-    async fn handle_burn(&self, from: String, btc_addr: String, value: u64, operator_id: u64);
+    async fn handle_mint(&self, tx_slot: u64, tx_signature: String, to: String, value: u64);
+    async fn handle_burn(
+        &self,
+        tx_slot: u64,
+        tx_signature: String,
+        from: String,
+        btc_addr: String,
+        value: u64,
+        operator_id: u64,
+    );
 }
 
 /// Monitor for bridge events
@@ -30,12 +38,17 @@ pub struct EventMonitor {
 }
 
 impl EventMonitor {
-    pub fn new(rpc_url: &str, program_id: Pubkey, handler: Box<dyn EventHandler>) -> Self {
+    pub fn new(
+        rpc_url: &str,
+        program_id: Pubkey,
+        handler: Box<dyn EventHandler>,
+        last_signature: Option<Signature>,
+    ) -> Self {
         Self {
             program_id,
             handler,
             rpc_client: RpcClient::new(rpc_url.to_string()),
-            last_signature: None,
+            last_signature,
         }
     }
 
@@ -77,6 +90,8 @@ impl EventMonitor {
                                                 {
                                                     self.handler
                                                         .handle_mint(
+                                                            sig_info.slot,
+                                                            sig_info.signature.clone(),
                                                             event.to.to_string(),
                                                             event.value,
                                                         )
@@ -90,6 +105,8 @@ impl EventMonitor {
                                                 {
                                                     self.handler
                                                         .handle_burn(
+                                                            sig_info.slot,
+                                                            sig_info.signature.clone(),
                                                             event.from.to_string(),
                                                             event.btc_addr,
                                                             event.value,

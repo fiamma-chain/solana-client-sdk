@@ -13,7 +13,7 @@ use anchor_spl::{
 };
 use anyhow::Result;
 use bitvm_bridge::{accounts, instruction as bridge_instruction, state::BridgeState};
-use solana_sdk::{signature::Signature, transaction::Transaction};
+use solana_sdk::signature::Signature;
 use solana_transaction_status::{EncodedConfirmedTransactionWithStatusMeta, UiTransactionEncoding};
 use std::{rc::Rc, str::FromStr};
 

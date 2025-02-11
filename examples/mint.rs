@@ -1,6 +1,7 @@
 use anyhow::anyhow;
 use anyhow::Result;
-use solana_bitvm_bridge_client::BitvmBridgeClient;
+
+use solana_bitvm_bridge_client::bridge_client::BitvmBridgeClient;
 use solana_sdk::signature::{Keypair, Signer};
 use solana_transaction_status::option_serializer::OptionSerializer;
 
@@ -20,6 +21,8 @@ async fn main() -> Result<()> {
 
     println!("Current payer: {}", recipient);
 
+    // Create query client
+
     // Create client instance
     let client = BitvmBridgeClient::new(
         url.to_string(),
@@ -29,7 +32,7 @@ async fn main() -> Result<()> {
     )?;
 
     // Sample transaction ID
-    let tx_id = [7u8; 32];
+    let tx_id = [8u8; 32];
 
     // Execute mint operation
     let result = client

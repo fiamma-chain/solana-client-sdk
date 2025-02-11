@@ -1,7 +1,7 @@
 use anyhow::anyhow;
 use anyhow::Result;
 use bs58;
-use solana_bitvm_bridge_client::BitvmBridgeClient;
+use solana_bitvm_bridge_client::bridge_client::BitvmBridgeClient;
 use solana_sdk::signature::Keypair;
 
 #[tokio::main]

@@ -1,8 +1,8 @@
 use anyhow::anyhow;
 use anyhow::Result;
 
+use anchor_client::solana_sdk::signature::{Keypair, Signer};
 use solana_bitvm_bridge_client::bridge_client::BitvmBridgeClient;
-use solana_sdk::signature::{Keypair, Signer};
 use solana_transaction_status::option_serializer::OptionSerializer;
 
 #[tokio::main]

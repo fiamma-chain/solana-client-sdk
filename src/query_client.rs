@@ -1,11 +1,10 @@
 use anchor_client::{
     solana_client::{rpc_client::RpcClient, rpc_config::RpcTransactionConfig},
-    solana_sdk::commitment_config::CommitmentConfig,
+    solana_sdk::{commitment_config::CommitmentConfig, signature::Signature},
 };
 
 use anyhow::Result;
 
-use solana_sdk::signature::Signature;
 use solana_transaction_status::{EncodedConfirmedTransactionWithStatusMeta, UiTransactionEncoding};
 use std::str::FromStr;
 

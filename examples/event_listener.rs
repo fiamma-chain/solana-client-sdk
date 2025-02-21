@@ -1,7 +1,7 @@
+use anchor_client::solana_sdk::pubkey::Pubkey;
 use anyhow::Result;
 use async_trait::async_trait;
 use solana_bitvm_bridge_client::events::{EventHandler, EventMonitor};
-use solana_sdk::pubkey::Pubkey;
 use std::str::FromStr;
 
 // Implementation of event handler

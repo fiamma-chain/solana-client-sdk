@@ -29,7 +29,6 @@ btc-light-client = { package = "btc-light-client", git = "https://github.com/fia
 anchor-spl = { version = "0.30.1", features = ["metadata"] }
 tokio = { version = "1.41.1", features = ["full"] }
 solana-transaction-status = "1.18.26"
-solana-sdk = "1.18.26"
 async-trait = "0.1"
 base64 = "0.22.1"
 dotenv = "0.15"

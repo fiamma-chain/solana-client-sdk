@@ -1,13 +1,11 @@
 use anchor_client::solana_client::rpc_client::GetConfirmedSignaturesForAddress2Config;
 use anchor_client::{
     solana_client::rpc_client::RpcClient,
-    solana_sdk::{commitment_config::CommitmentConfig, signature::Signature},
+    solana_sdk::{commitment_config::CommitmentConfig, pubkey::Pubkey, signature::Signature},
 };
 
 use anyhow::Result;
 use async_trait::async_trait;
-
-use solana_sdk::pubkey::Pubkey;
 use solana_transaction_status::UiTransactionEncoding;
 use std::{str::FromStr, time::Duration};
 use tokio::time::sleep;

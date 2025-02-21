@@ -15,15 +15,15 @@ use anyhow::Result;
 
 use bitvm_bridge::{accounts, instruction as bridge_instruction, state::BridgeState};
 use btc_light_client::state::BtcLightClientState;
-use std::{rc::Rc, str::FromStr};
+use std::{str::FromStr, sync::Arc};
 
 use crate::query_client::QueryClient;
 
 pub struct BitvmBridgeClient {
     query_client: QueryClient,
-    payer: Rc<Keypair>,
-    bitvm_bridge_program: Program<Rc<Keypair>>,
-    btc_light_client_program: Program<Rc<Keypair>>,
+    payer: Arc<Keypair>,
+    bitvm_bridge_program: Program<Arc<Keypair>>,
+    btc_light_client_program: Program<Arc<Keypair>>,
 }
 
 impl BitvmBridgeClient {
@@ -33,7 +33,7 @@ impl BitvmBridgeClient {
         btc_light_client_contract: String,
         payer: Keypair,
     ) -> Result<Self> {
-        let payer = Rc::new(payer);
+        let payer = Arc::new(payer);
         let cluster = Cluster::Custom(url.clone(), url.clone());
 
         let client =
@@ -106,12 +106,13 @@ impl BitvmBridgeClient {
         };
 
         // Send mint instruction
+        let payer = self.payer.clone();
         let signature = self
             .bitvm_bridge_program
             .request()
             .accounts(accounts)
             .args(bridge_instruction::Mint { tx_id, amount })
-            .signer(&*self.payer)
+            .signer(payer)
             .send()
             .await?;
 
@@ -146,6 +147,7 @@ impl BitvmBridgeClient {
         };
 
         // Send burn instruction
+        let payer = self.payer.clone();
         let signature = self
             .bitvm_bridge_program
             .request()
@@ -155,7 +157,7 @@ impl BitvmBridgeClient {
                 btc_addr,
                 operator_id,
             })
-            .signer(&*self.payer)
+            .signer(payer)
             .send()
             .await?;
 

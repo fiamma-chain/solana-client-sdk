@@ -13,8 +13,8 @@ pub fn parse_transaction_event(
 ) -> Result<Option<TransactionEvent>> {
     if let Some(meta) = &tx.transaction.meta {
         if let OptionSerializer::Some(logs) = &meta.log_messages {
-            let mint_discriminator = MintEvent::discriminator();
-            let burn_discriminator = BurnEvent::discriminator();
+            let mint_discriminator = MintEvent::DISCRIMINATOR;
+            let burn_discriminator = BurnEvent::DISCRIMINATOR;
 
             for log in logs {
                 if let Some(data) = log.strip_prefix("Program data: ") {

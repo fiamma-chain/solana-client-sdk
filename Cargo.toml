@@ -23,17 +23,18 @@ name = "event_listener"
 path = "examples/event_listener.rs"
 
 [dependencies]
-anchor-client = { version = "0.30.1", features = ["async"] }
+anchor-client = { git = "https://github.com/coral-xyz/anchor", rev = "0453672", features = [
+    "async",
+] }
 bitvm-bridge = { package = "bitvm-bridge-contracts-solana", git = "https://github.com/fiamma-chain/bitvm-bridge-contracts-solana.git", branch = "main" }
 btc-light-client = { package = "btc-light-client", git = "https://github.com/fiamma-chain/bitvm-bridge-contracts-solana.git", branch = "main" }
-anchor-spl = { version = "0.30.1", features = ["metadata"] }
+anchor-spl = { git = "https://github.com/coral-xyz/anchor", rev = "0453672", features = [
+    "metadata",
+] }
 tokio = { version = "1.41.1", features = ["full"] }
-solana-transaction-status = "1.18.26"
+solana-transaction-status = "2.2.0"
 async-trait = "0.1"
 base64 = "0.22.1"
 dotenv = "0.15"
 anyhow = "1.0"
 bs58 = "0.5.0"
-
-[patch.crates-io]
-curve25519-dalek = { git = "https://github.com/anza-xyz/curve25519-dalek.git", rev = "b500cdc2a920cd5bff9e2dd974d7b97349d61464" }

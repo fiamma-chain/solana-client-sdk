@@ -34,3 +34,6 @@ base64 = "0.22.1"
 dotenv = "0.15"
 anyhow = "1.0"
 bs58 = "0.5.0"
+
+[patch.crates-io]
+curve25519-dalek = { git = "https://github.com/anza-xyz/curve25519-dalek.git", rev = "b500cdc2a920cd5bff9e2dd974d7b97349d61464" }

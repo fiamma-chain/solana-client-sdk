@@ -47,7 +47,7 @@ async fn main() -> Result<()> {
 
     let last_signature = None;
     // Create and start event monitor
-    let mut monitor = EventMonitor::new(url, program_id, handler, last_signature);
+    let mut monitor = EventMonitor::new(url, program_id, handler, last_signature, 1);
     monitor.start_monitoring().await?;
     Ok(())
 }

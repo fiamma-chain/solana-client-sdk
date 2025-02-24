@@ -15,9 +15,9 @@ async fn main() -> Result<()> {
     let private_key = std::env::var("SOLANA_PRIVATE_KEY")
         .map_err(|_| anyhow!("SOLANA_PRIVATE_KEY not found in environment"))?;
 
-    let private_key = bs58::decode(private_key).into_vec()?;
-    let payer = Keypair::from_bytes(&private_key)?;
-    let recipient = payer.pubkey();
+    let private_key_bytes = bs58::decode(private_key.as_str()).into_vec()?;
+    let payer = Keypair::from_bytes(&private_key_bytes)?;
+    let recipient = payer.pubkey().to_string();
 
     println!("Current payer: {}", recipient);
 
@@ -25,19 +25,17 @@ async fn main() -> Result<()> {
 
     // Create client instance
     let client = BitvmBridgeClient::new(
-        url.to_string(),
-        bitvm_bridge_program_id.to_string(),
-        btc_light_client_program_id.to_string(),
-        payer,
+        url,
+        bitvm_bridge_program_id,
+        btc_light_client_program_id,
+        private_key.as_str(),
     )?;
 
     // Sample transaction ID
     let tx_id = [8u8; 32];
 
     // Execute mint operation
-    let result = client
-        .mint_tokens(recipient.to_string(), tx_id, 1000000)
-        .await?;
+    let result = client.mint_tokens(&recipient, tx_id, 1000000).await?;
 
     println!("Mint success! Signature: {}", result);
 

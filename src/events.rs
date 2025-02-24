@@ -18,16 +18,16 @@ pub trait EventHandler: Send + Sync {
     async fn handle_mint(
         &self,
         tx_slot: u64,
-        tx_signature: String,
-        to: String,
+        tx_signature: &str,
+        to: &str,
         value: u64,
     ) -> Result<()>;
     async fn handle_burn(
         &self,
         tx_slot: u64,
-        tx_signature: String,
-        from: String,
-        btc_addr: String,
+        tx_signature: &str,
+        from: &str,
+        btc_addr: &str,
         value: u64,
         operator_id: u64,
     ) -> Result<()>;
@@ -83,8 +83,8 @@ impl EventMonitor {
                                     self.handler
                                         .handle_mint(
                                             sig_info.slot,
-                                            sig_info.signature.clone(),
-                                            mint_event.to,
+                                            &sig_info.signature,
+                                            &mint_event.to,
                                             mint_event.value,
                                         )
                                         .await?;
@@ -93,9 +93,9 @@ impl EventMonitor {
                                     self.handler
                                         .handle_burn(
                                             sig_info.slot,
-                                            sig_info.signature.clone(),
-                                            burn_event.from,
-                                            burn_event.btc_addr,
+                                            &sig_info.signature,
+                                            &burn_event.from,
+                                            &burn_event.btc_addr,
                                             burn_event.value,
                                             burn_event.operator_id,
                                         )

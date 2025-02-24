@@ -28,13 +28,15 @@ pub struct BitvmBridgeClient {
 
 impl BitvmBridgeClient {
     pub fn new(
-        url: String,
-        bitvm_bridge_contract: String,
-        btc_light_client_contract: String,
-        payer: Keypair,
+        url: &str,
+        bitvm_bridge_contract: &str,
+        btc_light_client_contract: &str,
+        private_key: &str,
     ) -> Result<Self> {
+        let private_key = bs58::decode(private_key).into_vec()?;
+        let payer = Keypair::from_bytes(&private_key)?;
         let payer = Arc::new(payer);
-        let cluster = Cluster::Custom(url.clone(), url.clone());
+        let cluster = Cluster::Custom(url.to_string(), url.to_string());
 
         let client =
             Client::new_with_options(cluster, payer.clone(), CommitmentConfig::confirmed());
@@ -43,7 +45,7 @@ impl BitvmBridgeClient {
         let btc_light_client_program =
             client.program(Pubkey::from_str(&btc_light_client_contract)?)?;
 
-        let query_client = QueryClient::new(url)?;
+        let query_client = QueryClient::new(url.to_string())?;
 
         Ok(Self {
             query_client,
@@ -55,10 +57,11 @@ impl BitvmBridgeClient {
 
     pub async fn mint_tokens(
         &self,
-        recipient: String,
+        recipient: &str,
         tx_id: [u8; 32],
         amount: u64,
     ) -> anyhow::Result<String> {
+        let recipient = Pubkey::from_str(recipient)?;
         // Get bridge state PDA
         let (bridge_state, _) =
             Pubkey::find_program_address(&[b"bridge_state"], &self.bitvm_bridge_program.id());
@@ -70,7 +73,6 @@ impl BitvmBridgeClient {
             .await?;
 
         let mint_account = bridge_state_data.mint_account;
-        let recipient = Pubkey::from_str(&recipient)?;
 
         // Get associated token account for recipient
         let ata = get_associated_token_address(&recipient, &mint_account);
@@ -122,9 +124,10 @@ impl BitvmBridgeClient {
     pub async fn burn_tokens(
         &self,
         amount: u64,
-        btc_addr: String,
+        btc_addr: &str,
         operator_id: u64,
     ) -> anyhow::Result<String> {
+        let btc_addr = btc_addr.to_string();
         // Get bridge state PDA
         let (bridge_state, _) =
             Pubkey::find_program_address(&[b"bridge_state"], &self.bitvm_bridge_program.id());

@@ -180,6 +180,20 @@ impl BitvmBridgeClient {
 
         Ok(btc_light_client_state_data.latest_block_height)
     }
+
+    pub async fn query_min_confirmations(&self) -> anyhow::Result<u64> {
+        let (btc_light_client_state, _) = Pubkey::find_program_address(
+            &[b"btc_light_client"],
+            &self.btc_light_client_program.id(),
+        );
+
+        let btc_light_client_state_data = self
+            .btc_light_client_program
+            .account::<BtcLightClientState>(btc_light_client_state)
+            .await?;
+
+        Ok(btc_light_client_state_data.min_confirmations)
+    }
 }
 
 impl std::ops::Deref for BitvmBridgeClient {

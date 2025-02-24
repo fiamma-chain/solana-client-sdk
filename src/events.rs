@@ -33,6 +33,7 @@ pub struct EventMonitor {
     handler: Box<dyn EventHandler>,
     rpc_client: RpcClient,
     last_signature: Option<Signature>,
+    query_interval: u64,
 }
 
 impl EventMonitor {
@@ -41,12 +42,14 @@ impl EventMonitor {
         program_id: Pubkey,
         handler: Box<dyn EventHandler>,
         last_signature: Option<Signature>,
+        query_interval: u64,
     ) -> Self {
         Self {
             program_id,
             handler,
             rpc_client: RpcClient::new(rpc_url.to_string()),
             last_signature,
+            query_interval,
         }
     }
 
@@ -102,7 +105,7 @@ impl EventMonitor {
                 }
             }
 
-            sleep(Duration::from_secs(1)).await;
+            sleep(Duration::from_secs(self.query_interval)).await;
         }
     }
 }

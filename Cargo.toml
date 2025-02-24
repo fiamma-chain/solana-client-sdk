@@ -1,13 +1,13 @@
 [package]
-name = "solana-bitvm-bridge-client"
+name = "solana-client-sdk"
 version = "0.1.0"
 edition = "2021"
 description = "A Solana client SDK for BitVM Bridge"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/your-username/solana-bitvm-bridge-client"
+repository = "https://github.com/fiamma-chain/solana-client-sdk"
 
 [lib]
-name = "solana_bitvm_bridge_client"
+name = "solana_client_sdk"
 path = "src/lib.rs"
 
 [[example]]

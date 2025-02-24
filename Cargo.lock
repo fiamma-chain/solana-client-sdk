@@ -3607,23 +3607,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "solana-bitvm-bridge-client"
-version = "0.1.0"
-dependencies = [
- "anchor-client",
- "anchor-spl",
- "anyhow",
- "async-trait",
- "base64 0.22.1",
- "bitvm-bridge-contracts-solana",
- "bs58",
- "btc-light-client",
- "dotenv",
- "solana-transaction-status",
- "tokio",
-]
-
-[[package]]
 name = "solana-blake3-hasher"
 version = "2.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3703,6 +3686,23 @@ dependencies = [
  "solana-transaction-error",
  "solana-udp-client",
  "thiserror 2.0.11",
+ "tokio",
+]
+
+[[package]]
+name = "solana-client-sdk"
+version = "0.1.0"
+dependencies = [
+ "anchor-client",
+ "anchor-spl",
+ "anyhow",
+ "async-trait",
+ "base64 0.22.1",
+ "bitvm-bridge-contracts-solana",
+ "bs58",
+ "btc-light-client",
+ "dotenv",
+ "solana-transaction-status",
  "tokio",
 ]
 

@@ -9,12 +9,19 @@ struct BitVMEventHandler;
 
 #[async_trait]
 impl EventHandler for BitVMEventHandler {
-    async fn handle_mint(&self, tx_slot: u64, tx_signature: String, to: String, value: u64) {
+    async fn handle_mint(
+        &self,
+        tx_slot: u64,
+        tx_signature: String,
+        to: String,
+        value: u64,
+    ) -> Result<()> {
         println!("Mint event detected:");
         println!("  Slot: {}", tx_slot);
         println!("  Signature: {}", tx_signature);
         println!("  To: {}", to);
         println!("  Amount: {}", value);
+        Ok(())
     }
 
     async fn handle_burn(
@@ -25,7 +32,7 @@ impl EventHandler for BitVMEventHandler {
         btc_address: String,
         value: u64,
         operator_id: u64,
-    ) {
+    ) -> Result<()> {
         println!("Burn event detected:");
         println!("  Slot: {}", tx_slot);
         println!("  Signature: {}", tx_signature);
@@ -33,6 +40,7 @@ impl EventHandler for BitVMEventHandler {
         println!("  BTC Address: {}", btc_address);
         println!("  Amount: {}", value);
         println!("  Operator ID: {}", operator_id);
+        Ok(())
     }
 }
 

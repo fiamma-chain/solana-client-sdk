@@ -262,6 +262,19 @@ impl BitvmBridgeClient {
         Ok(signature.to_string())
     }
     pub async fn get_tx_verification_status(&self, tx_id: [u8; 32]) -> anyhow::Result<bool> {
+        // Get bridge state PDA
+        let (bridge_state, _) =
+            Pubkey::find_program_address(&[b"bridge_state"], &self.bitvm_bridge_program.id());
+
+        // Fetch and deserialize bridge state data
+        let bridge_state_data = self
+            .bitvm_bridge_program
+            .account::<BridgeState>(bridge_state)
+            .await?;
+        if bridge_state_data.skip_tx_verification {
+            return Ok(true);
+        }
+
         let (tx_verified_state, _) = Pubkey::find_program_address(
             &[b"tx_verified_state", &tx_id],
             &self.btc_light_client_program.id(),

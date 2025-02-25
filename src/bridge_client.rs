@@ -194,6 +194,86 @@ impl BitvmBridgeClient {
 
         Ok(btc_light_client_state_data.min_confirmations)
     }
+
+    pub async fn verify_transaction(
+        &self,
+        block_height: u64,
+        block_header: &[u8],
+        tx_id: [u8; 32],
+        tx_index: u32,
+        merkle_proof: Vec<[u8; 32]>,
+        raw_tx: &[u8],
+        output_index: u32,
+        expected_amount: u64,
+        expected_script_hash: [u8; 32],
+    ) -> anyhow::Result<String> {
+        // get block_hash_entry PDA
+        let (block_hash_entry, _) = Pubkey::find_program_address(
+            &[b"block_hash_entry", &block_height.to_le_bytes()],
+            &self.btc_light_client_program.id(),
+        );
+
+        // get tx_verified_state PDA
+        let (tx_verified_state, _) = Pubkey::find_program_address(
+            &[b"tx_verified_state", &tx_id],
+            &self.btc_light_client_program.id(),
+        );
+
+        // build tx proof
+        let tx_proof = btc_light_client::instructions::verify_tx::BtcTxProof {
+            block_header: block_header.to_vec(),
+            tx_id,
+            tx_index,
+            merkle_proof,
+            raw_tx: raw_tx.to_vec(),
+            output_index,
+            expected_amount,
+            expected_script_hash,
+        };
+
+        let (btc_light_client_state, _) = Pubkey::find_program_address(
+            &[b"btc_light_client"],
+            &self.btc_light_client_program.id(),
+        );
+
+        // build accounts
+        let accounts = btc_light_client::accounts::VerifyTransaction {
+            state: btc_light_client_state,
+            tx_verified_state,
+            payer: self.payer.pubkey(),
+            system_program: system_program::ID,
+            block_hash_entry,
+        };
+
+        // send verify transaction instruction
+        let payer = self.payer.clone();
+        let signature = self
+            .btc_light_client_program
+            .request()
+            .accounts(accounts)
+            .args(btc_light_client::instruction::VerifyTransaction {
+                block_height,
+                tx_proof,
+            })
+            .signer(payer)
+            .send()
+            .await?;
+
+        Ok(signature.to_string())
+    }
+    pub async fn get_tx_verification_status(&self, tx_id: [u8; 32]) -> anyhow::Result<bool> {
+        let (tx_verified_state, _) = Pubkey::find_program_address(
+            &[b"tx_verified_state", &tx_id],
+            &self.btc_light_client_program.id(),
+        );
+
+        let tx_verified_state_data = self
+            .btc_light_client_program
+            .account::<btc_light_client::state::TxVerifiedState>(tx_verified_state)
+            .await?;
+
+        Ok(tx_verified_state_data.is_verified)
+    }
 }
 
 impl std::ops::Deref for BitvmBridgeClient {

@@ -11,7 +11,6 @@ use anchor_spl::{
     associated_token::{get_associated_token_address, spl_associated_token_account},
     token::spl_token,
 };
-use anyhow::Result;
 
 use bitvm_bridge::{accounts, instruction as bridge_instruction, state::BridgeState};
 use btc_light_client::state::BtcLightClientState;
@@ -32,7 +31,7 @@ impl BitvmBridgeClient {
         bitvm_bridge_contract: &str,
         btc_light_client_contract: &str,
         private_key: &str,
-    ) -> Result<Self> {
+    ) -> anyhow::Result<Self> {
         let private_key = bs58::decode(private_key).into_vec()?;
         let payer = Keypair::from_bytes(&private_key)?;
         let payer = Arc::new(payer);

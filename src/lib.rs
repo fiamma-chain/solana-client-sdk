@@ -1,3 +1,5 @@
+use serde::{Deserialize, Serialize};
+
 pub mod bridge_client;
 pub mod events;
 pub mod query_client;
@@ -9,13 +11,13 @@ pub enum TransactionEvent {
     Burn(BurnEventData),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct MintEventData {
     pub to: String,
     pub value: u64,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct BurnEventData {
     pub from: String,
     pub btc_addr: String,

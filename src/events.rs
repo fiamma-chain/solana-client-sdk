@@ -45,18 +45,25 @@ pub struct EventMonitor {
 impl EventMonitor {
     pub fn new(
         rpc_url: &str,
-        program_id: Pubkey,
+        program_id: &str,
         handler: Box<dyn EventHandler>,
-        last_signature: Option<Signature>,
+        last_signature: Option<String>,
         query_interval: u64,
-    ) -> Self {
-        Self {
+    ) -> anyhow::Result<Self> {
+        let program_id = Pubkey::from_str(program_id)?;
+        let rpc_client = RpcClient::new(rpc_url.to_string());
+        let last_signature = if let Some(s) = last_signature {
+            Some(Signature::from_str(&s)?)
+        } else {
+            None
+        };
+        Ok(Self {
             program_id,
             handler,
-            rpc_client: RpcClient::new(rpc_url.to_string()),
+            rpc_client,
             last_signature,
             query_interval,
-        }
+        })
     }
 
     pub async fn start_monitoring(&mut self) -> Result<()> {

@@ -50,12 +50,11 @@ async fn main() -> Result<()> {
     let bitvm_bridge_program_id = "HWyR228YqC5im7bgpzU2ZDBf5TnPJKDQYe5xoHEowxm6";
 
     // Initialize program ID and event handler
-    let program_id = Pubkey::from_str(bitvm_bridge_program_id).unwrap();
     let handler = Box::new(BitVMEventHandler);
 
     let last_signature = None;
     // Create and start event monitor
-    let mut monitor = EventMonitor::new(url, program_id, handler, last_signature, 1);
+    let mut monitor = EventMonitor::new(url, bitvm_bridge_program_id, handler, last_signature, 1)?;
     monitor.start_monitoring().await?;
     Ok(())
 }

@@ -3702,6 +3702,7 @@ dependencies = [
  "bs58",
  "btc-light-client",
  "dotenv",
+ "serde",
  "solana-transaction-status",
  "tokio",
 ]

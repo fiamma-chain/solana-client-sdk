@@ -1,6 +1,6 @@
 use anchor_client::solana_client::rpc_client::GetConfirmedSignaturesForAddress2Config;
 use anchor_client::{
-    solana_client::rpc_client::RpcClient,
+    solana_client::{rpc_client::RpcClient, rpc_config::RpcTransactionConfig},
     solana_sdk::{commitment_config::CommitmentConfig, pubkey::Pubkey, signature::Signature},
 };
 
@@ -80,9 +80,13 @@ impl EventMonitor {
                 .get_signatures_for_address_with_config(&self.program_id, config)
             {
                 for sig_info in signatures.iter().rev() {
-                    if let Ok(tx) = self.rpc_client.get_transaction(
+                    if let Ok(tx) = self.rpc_client.get_transaction_with_config(
                         &Signature::from_str(&sig_info.signature)?,
-                        UiTransactionEncoding::Json,
+                        RpcTransactionConfig {
+                            encoding: Some(UiTransactionEncoding::Json),
+                            commitment: Some(CommitmentConfig::confirmed()),
+                            max_supported_transaction_version: Some(0),
+                        },
                     ) {
                         if let Ok(Some(event)) = utils::parse_transaction_event(&tx) {
                             match event {

@@ -8,8 +8,8 @@ use solana_transaction_status::option_serializer::OptionSerializer;
 #[tokio::main]
 async fn main() -> Result<()> {
     let url = "https://api.devnet.solana.com";
-    let bitvm_bridge_program_id = "HWyR228YqC5im7bgpzU2ZDBf5TnPJKDQYe5xoHEowxm6";
-    let btc_light_client_program_id = "H2WfnhhCB3hPsSjNSbzQDw4ivDWjAHSo1QwXc6kZxMG1";
+    let bitvm_bridge_program_id = "Fdj7bMrz8u4ZLyHt3TAnbdqNxtNwQUtqEtgCM84SNWTG";
+    let btc_light_client_program_id = "Dna44JZJLBgg3UCh5VCQvxgsPVhahZmL6o4Hc4ewqk6i";
     dotenv::dotenv().ok();
 
     let private_key = std::env::var("SOLANA_PRIVATE_KEY")
@@ -32,10 +32,10 @@ async fn main() -> Result<()> {
     )?;
 
     // Sample transaction ID
-    let tx_id = [8u8; 32];
+    let tx_id = [15u8; 32];
 
     // Execute mint operation
-    let result = client.mint_tokens(&recipient, tx_id, 1000000).await?;
+    let result = client.mint_tokens(&recipient, tx_id, 300000).await?;
 
     println!("Mint success! Signature: {}", result);
 

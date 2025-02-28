@@ -23,7 +23,13 @@ async fn main() -> Result<()> {
     )?;
 
     // Execute burn operation
-    let result = client.burn_tokens(1000000, "btc_address_string", 1).await?;
+    let result = client
+        .burn_tokens(
+            1000000,
+            "bcrt1phcnl4zcl2fu047pv4wx6y058v8u0n02at6lthvm7pcf2wrvjm5tqatn90k",
+            1,
+        )
+        .await?;
 
     println!("Burn success! Signature: {}", result);
     Ok(())

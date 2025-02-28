@@ -1,5 +1,4 @@
 use anyhow::{anyhow, Result};
-use hex::FromHex;
 use solana_client_sdk::bridge_client::BitvmBridgeClient;
 
 #[tokio::main]

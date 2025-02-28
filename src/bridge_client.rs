@@ -1,6 +1,7 @@
 use anchor_client::{
     solana_sdk::{
         commitment_config::CommitmentConfig,
+        compute_budget::ComputeBudgetInstruction,
         pubkey::Pubkey,
         signature::{Keypair, Signer},
         system_program,
@@ -244,11 +245,15 @@ impl BitvmBridgeClient {
             block_hash_entry,
         };
 
+        let request_compute_units_instruction =
+            ComputeBudgetInstruction::set_compute_unit_limit(500000);
+
         // send verify transaction instruction
         let payer = self.payer.clone();
         let signature = self
             .btc_light_client_program
             .request()
+            .instruction(request_compute_units_instruction)
             .accounts(accounts)
             .args(btc_light_client::instruction::VerifyTransaction {
                 block_height,

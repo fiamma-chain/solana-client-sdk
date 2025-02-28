@@ -39,3 +39,4 @@ dotenv = "0.15"
 anyhow = "1.0"
 bs58 = "0.5.0"
 serde = { version = "1.0", features = ["derive"] }
+hex = "0.4.3"

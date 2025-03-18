@@ -292,8 +292,9 @@ impl BitvmBridgeClient {
 
         Ok(tx_verified_state_data.is_verified)
     }
-    pub fn is_valid_solana_address(&self, address: &str) -> bool {
-        Pubkey::from_str(address).is_ok()
+    pub fn validate_solana_address(address: &str) -> anyhow::Result<()> {
+        Pubkey::from_str(address)?;
+        Ok(())
     }
 }
 

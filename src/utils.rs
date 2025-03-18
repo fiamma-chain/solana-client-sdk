@@ -19,14 +19,14 @@ pub fn parse_transaction_event(
             for log in logs {
                 if let Some(data) = log.strip_prefix("Program data: ") {
                     if let Ok(decoded) = general_purpose::STANDARD.decode(data) {
-                        if decoded.starts_with(&mint_discriminator) {
+                        if decoded.starts_with(mint_discriminator) {
                             if let Ok(event) = MintEvent::try_from_slice(&decoded[8..]) {
                                 return Ok(Some(TransactionEvent::Mint(MintEventData {
                                     to: event.to.to_string(),
                                     value: event.value,
                                 })));
                             }
-                        } else if decoded.starts_with(&burn_discriminator) {
+                        } else if decoded.starts_with(burn_discriminator) {
                             if let Ok(event) = BurnEvent::try_from_slice(&decoded[8..]) {
                                 return Ok(Some(TransactionEvent::Burn(BurnEventData {
                                     from: event.from.to_string(),

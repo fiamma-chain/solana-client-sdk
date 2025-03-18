@@ -42,7 +42,7 @@ async fn main() -> Result<()> {
 
     // Merkle proof (each element is 32 bytes)
     let merkle_proof_hex = "7c71c06b93661123517e2c212e71c4b94995cd695d02138a58af26d59095a29639e334b03828f792713b73abf3d3ed0c7202224e390f8d2f6b93f22dca85ea0b81c84af181d04680ade41b5dc3006876a3bf9fe4bf21193ffef1f0124e461ecd5c796b6c9707e804882e136418bcce72f005f59f8fa1bea691bf3738e77ab27830ecfe6fab2e947c9e452b53fc29773bb6e2f9d2c68c494b3d8f34ecd1b3dde4cf735b17a31639e35b885201a60d955aa1a83b057ba5fc59e6c5c27d2f90752da6c10f67250e44003cf0f554fa71cfa5e1aa4a6c1b676f422474dfd185afe378d2efbbda3e25ff85145d37b6fb3c51cfc9e3aedeca7ffe87e500cff2d55944acf1fb3c918c3fb6ced073e824323d02c78533780f15c49ce124dcc69f31b7260b2fd97ba6b3aed1a550db3e5418804fb8ce812b23e10fed70a65c29907c1ec9f7108d669f898dc0926043d8314d199e89f1113463e57997b7fe86212dbb735935112d761bb89f9e69ecd0d1471032d964847fc3a0318d07ce36f09e6537a3011e";
-    let merkle_bytes = hex::decode(&merkle_proof_hex)?;
+    let merkle_bytes = hex::decode(merkle_proof_hex)?;
     let mut merkle_path = Vec::new();
     for chunk in merkle_bytes.chunks(32) {
         if chunk.len() == 32 {

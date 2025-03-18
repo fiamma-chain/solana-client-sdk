@@ -41,9 +41,9 @@ impl BitvmBridgeClient {
         let client =
             Client::new_with_options(cluster, payer.clone(), CommitmentConfig::confirmed());
 
-        let bitvm_bridge_program = client.program(Pubkey::from_str(&bitvm_bridge_contract)?)?;
+        let bitvm_bridge_program = client.program(Pubkey::from_str(bitvm_bridge_contract)?)?;
         let btc_light_client_program =
-            client.program(Pubkey::from_str(&btc_light_client_contract)?)?;
+            client.program(Pubkey::from_str(btc_light_client_contract)?)?;
 
         let query_client = QueryClient::new(url.to_string())?;
 
@@ -195,6 +195,7 @@ impl BitvmBridgeClient {
         Ok(btc_light_client_state_data.min_confirmations)
     }
 
+    #[allow(clippy::too_many_arguments)]
     pub async fn verify_transaction(
         &self,
         block_height: u64,
@@ -291,6 +292,9 @@ impl BitvmBridgeClient {
 
         Ok(tx_verified_state_data.is_verified)
     }
+    pub fn is_valid_solana_address(&self, address: &str) -> bool {
+        Pubkey::from_str(address).is_ok()
+    }
 }
 
 impl std::ops::Deref for BitvmBridgeClient {
@@ -298,5 +302,61 @@ impl std::ops::Deref for BitvmBridgeClient {
 
     fn deref(&self) -> &Self::Target {
         &self.query_client
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::BitvmBridgeClient;
+    use crate::query_client::QueryClient;
+    use anchor_client::{
+        solana_sdk::{commitment_config::CommitmentConfig, pubkey::Pubkey, signature::Keypair},
+        Client, Cluster,
+    };
+    use std::{str::FromStr, sync::Arc};
+
+    #[test]
+    fn test_is_valid_solana_address() {
+        // This is just a mock implementation for unit testing
+        // Mock the client dependencies to allow offline testing
+        let private_key = Keypair::new();
+        let payer = Arc::new(private_key);
+        let cluster = Cluster::Custom(
+            "http://localhost:8899".to_string(),
+            "http://localhost:8899".to_string(),
+        );
+
+        let client =
+            Client::new_with_options(cluster, payer.clone(), CommitmentConfig::confirmed());
+        let dummy_program_id = "11111111111111111111111111111111"; // System Program ID
+
+        let bitvm_bridge_program = client
+            .program(Pubkey::from_str(dummy_program_id).unwrap())
+            .unwrap();
+        let btc_light_client_program = client
+            .program(Pubkey::from_str(dummy_program_id).unwrap())
+            .unwrap();
+
+        let query_client = QueryClient::new("http://localhost:8899".to_string()).unwrap();
+
+        let client = BitvmBridgeClient {
+            query_client,
+            payer,
+            bitvm_bridge_program,
+            btc_light_client_program,
+        };
+
+        // Valid Solana addresses (base58 encoded)
+        assert!(client.is_valid_solana_address("11111111111111111111111111111111")); // System Program
+        assert!(client.is_valid_solana_address("AgCVMw9PkZqBCGiupLhdgKAcudKcjyUppShJCsJa7fY3")); // Random valid address
+        assert!(client.is_valid_solana_address("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v")); // USDC mint
+
+        // Invalid Solana addresses
+        assert!(!client.is_valid_solana_address("0x0000000000000000000000000000000000000000")); // Ethereum style
+        assert!(!client.is_valid_solana_address("not-a-valid-address"));
+        assert!(!client.is_valid_solana_address("11111111")); // Too short
+        assert!(!client
+            .is_valid_solana_address("111111111111111111111111111111111111111111111111111111"));
+        // Too long
     }
 }

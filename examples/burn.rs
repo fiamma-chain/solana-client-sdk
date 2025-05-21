@@ -11,8 +11,8 @@ async fn main() -> Result<()> {
         .map_err(|_| anyhow!("SOLANA_PRIVATE_KEY not found in environment"))?;
 
     let url = "https://api.devnet.solana.com";
-    let bitvm_bridge_program_id = "Fdj7bMrz8u4ZLyHt3TAnbdqNxtNwQUtqEtgCM84SNWTG";
-    let btc_light_client_program_id = "Dna44JZJLBgg3UCh5VCQvxgsPVhahZmL6o4Hc4ewqk6i";
+    let bitvm_bridge_program_id = "8hPLqJVKkmSVoM7JYvFJ8KN5B2RTrJxx8rbBoh8hX1An";
+    let btc_light_client_program_id = "F14fXdFjBbhEjXjFuhSharSt7UxGPWknkKYmpJd2Rvka";
 
     // Create client instance
     let client = BitvmBridgeClient::new(
@@ -25,7 +25,7 @@ async fn main() -> Result<()> {
     // Execute burn operation
     let result = client
         .burn_tokens(
-            1000000,
+            300000,
             "bcrt1phcnl4zcl2fu047pv4wx6y058v8u0n02at6lthvm7pcf2wrvjm5tqatn90k",
             1,
         )

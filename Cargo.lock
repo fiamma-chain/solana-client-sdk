@@ -724,7 +724,7 @@ dependencies = [
 [[package]]
 name = "bitvm-bridge-contracts-solana"
 version = "0.1.0"
-source = "git+https://github.com/fiamma-chain/bitvm-bridge-contracts-solana.git?branch=main#e389fb34e23d20c8cf584b4459c7c35349fd0781"
+source = "git+https://github.com/fiamma-chain/bitvm-bridge-contracts-solana.git?branch=main#b82d903faa34701d579e1351db767fba8c39f22e"
 dependencies = [
  "anchor-lang",
  "anchor-spl",
@@ -864,7 +864,7 @@ dependencies = [
 [[package]]
 name = "btc-light-client"
 version = "0.1.0"
-source = "git+https://github.com/fiamma-chain/bitvm-bridge-contracts-solana.git?branch=main#e389fb34e23d20c8cf584b4459c7c35349fd0781"
+source = "git+https://github.com/fiamma-chain/bitvm-bridge-contracts-solana.git?branch=main#b82d903faa34701d579e1351db767fba8c39f22e"
 dependencies = [
  "anchor-lang",
  "bitcoin",

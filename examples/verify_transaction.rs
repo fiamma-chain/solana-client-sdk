@@ -11,8 +11,8 @@ async fn main() -> Result<()> {
 
     // Set connection parameters
     let url = "https://api.devnet.solana.com";
-    let bitvm_bridge_program_id = "J64ucfNboe9e3FtoeSxMzmkobfTxEkJgiLwY4nYgQLBe";
-    let btc_light_client_program_id = "8dCJMu6sum1A3W2R6iB1gHus45ayrnRmChSfGus4rRsL";
+    let bitvm_bridge_program_id = "8hPLqJVKkmSVoM7JYvFJ8KN5B2RTrJxx8rbBoh8hX1An";
+    let btc_light_client_program_id = "F14fXdFjBbhEjXjFuhSharSt7UxGPWknkKYmpJd2Rvka";
 
     // Create client instance
     let client = BitvmBridgeClient::new(

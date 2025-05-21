@@ -45,7 +45,7 @@ impl EventHandler for BitVMEventHandler {
 #[tokio::main]
 async fn main() -> Result<()> {
     let url = "https://api.devnet.solana.com";
-    let bitvm_bridge_program_id = "Fdj7bMrz8u4ZLyHt3TAnbdqNxtNwQUtqEtgCM84SNWTG";
+    let bitvm_bridge_program_id = "8hPLqJVKkmSVoM7JYvFJ8KN5B2RTrJxx8rbBoh8hX1An";
 
     // Initialize program ID and event handler
     let handler = Box::new(BitVMEventHandler);

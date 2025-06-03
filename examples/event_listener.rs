@@ -10,12 +10,14 @@ impl EventHandler for BitVMEventHandler {
     async fn handle_mint(
         &self,
         tx_slot: u64,
+        tx_block_time: u64,
         tx_signature: &str,
         to: &str,
         value: u64,
     ) -> Result<()> {
         println!("Mint event detected:");
         println!("  Slot: {}", tx_slot);
+        println!("  Block Time: {}", tx_block_time);
         println!("  Signature: {}", tx_signature);
         println!("  To: {}", to);
         println!("  Amount: {}", value);
@@ -25,6 +27,7 @@ impl EventHandler for BitVMEventHandler {
     async fn handle_burn(
         &self,
         tx_slot: u64,
+        tx_block_time: u64,
         tx_signature: &str,
         from: &str,
         btc_address: &str,
@@ -33,6 +36,7 @@ impl EventHandler for BitVMEventHandler {
     ) -> Result<()> {
         println!("Burn event detected:");
         println!("  Slot: {}", tx_slot);
+        println!("  Block Time: {}", tx_block_time);
         println!("  Signature: {}", tx_signature);
         println!("  From: {}", from);
         println!("  BTC Address: {}", btc_address);

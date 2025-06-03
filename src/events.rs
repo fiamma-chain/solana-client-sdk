@@ -18,6 +18,7 @@ pub trait EventHandler: Send + Sync {
     async fn handle_mint(
         &self,
         tx_slot: u64,
+        tx_block_time: u64,
         tx_signature: &str,
         to: &str,
         value: u64,
@@ -25,6 +26,7 @@ pub trait EventHandler: Send + Sync {
     async fn handle_burn(
         &self,
         tx_slot: u64,
+        tx_block_time: u64,
         tx_signature: &str,
         from: &str,
         btc_addr: &str,
@@ -80,6 +82,7 @@ impl EventMonitor {
                 .get_signatures_for_address_with_config(&self.program_id, config)
             {
                 for sig_info in signatures.iter().rev() {
+                    let block_time = sig_info.block_time.unwrap_or(0) as u64;
                     if let Ok(tx) = self.rpc_client.get_transaction_with_config(
                         &Signature::from_str(&sig_info.signature)?,
                         RpcTransactionConfig {
@@ -94,6 +97,7 @@ impl EventMonitor {
                                     self.handler
                                         .handle_mint(
                                             sig_info.slot,
+                                            block_time,
                                             &sig_info.signature,
                                             &mint_event.to,
                                             mint_event.value,
@@ -104,6 +108,7 @@ impl EventMonitor {
                                     self.handler
                                         .handle_burn(
                                             sig_info.slot,
+                                            block_time,
                                             &sig_info.signature,
                                             &burn_event.from,
                                             &burn_event.btc_addr,

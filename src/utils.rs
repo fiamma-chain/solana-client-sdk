@@ -31,6 +31,7 @@ pub fn parse_transaction_event(
                                 return Ok(Some(TransactionEvent::Burn(BurnEventData {
                                     from: event.from.to_string(),
                                     btc_addr: event.btc_addr,
+                                    fee_rate: event.fee_rate,
                                     value: event.value,
                                     operator_id: event.operator_id,
                                 })));

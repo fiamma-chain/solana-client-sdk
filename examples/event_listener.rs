@@ -31,6 +31,7 @@ impl EventHandler for BitVMEventHandler {
         tx_signature: &str,
         from: &str,
         btc_address: &str,
+        fee_rate: u32,
         value: u64,
         operator_id: u64,
     ) -> Result<()> {
@@ -40,6 +41,7 @@ impl EventHandler for BitVMEventHandler {
         println!("  Signature: {}", tx_signature);
         println!("  From: {}", from);
         println!("  BTC Address: {}", btc_address);
+        println!("  Fee Rate: {}", fee_rate);
         println!("  Amount: {}", value);
         println!("  Operator ID: {}", operator_id);
         Ok(())

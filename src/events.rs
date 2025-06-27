@@ -30,6 +30,7 @@ pub trait EventHandler: Send + Sync {
         tx_signature: &str,
         from: &str,
         btc_addr: &str,
+        fee_rate: u32,
         value: u64,
         operator_id: u64,
     ) -> Result<()>;
@@ -112,6 +113,7 @@ impl EventMonitor {
                                             &sig_info.signature,
                                             &burn_event.from,
                                             &burn_event.btc_addr,
+                                            burn_event.fee_rate,
                                             burn_event.value,
                                             burn_event.operator_id,
                                         )

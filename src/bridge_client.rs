@@ -125,6 +125,7 @@ impl BitvmBridgeClient {
         &self,
         amount: u64,
         btc_addr: &str,
+        fee_rate: u32,
         operator_id: u64,
     ) -> anyhow::Result<String> {
         let btc_addr = btc_addr.to_string();
@@ -158,6 +159,7 @@ impl BitvmBridgeClient {
             .args(bridge_instruction::Burn {
                 amount,
                 btc_addr,
+                fee_rate,
                 operator_id,
             })
             .signer(payer)

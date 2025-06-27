@@ -21,6 +21,7 @@ pub struct MintEventData {
 pub struct BurnEventData {
     pub from: String,
     pub btc_addr: String,
+    pub fee_rate: u32,
     pub value: u64,
     pub operator_id: u64,
 }

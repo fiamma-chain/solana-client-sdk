@@ -27,6 +27,7 @@ async fn main() -> Result<()> {
         .burn_tokens(
             300000,
             "bcrt1phcnl4zcl2fu047pv4wx6y058v8u0n02at6lthvm7pcf2wrvjm5tqatn90k",
+            10,
             1,
         )
         .await?;

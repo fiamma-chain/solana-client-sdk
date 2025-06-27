@@ -32,7 +32,7 @@ async fn main() -> Result<()> {
     )?;
 
     // Sample transaction ID
-    let tx_id = [15u8; 32];
+    let tx_id = [16u8; 32];
 
     // Execute mint operation
     let result = client.mint_tokens(&recipient, tx_id, 300000).await?;
